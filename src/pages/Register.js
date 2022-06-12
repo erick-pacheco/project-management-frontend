@@ -9,7 +9,6 @@ import Page from '../components/Page';
 import Logo from '../components/Logo';
 // sections
 import { RegisterForm } from '../sections/auth/register';
-import AuthSocial from '../sections/auth/AuthSocial';
 
 // ----------------------------------------------------------------------
 
@@ -58,9 +57,8 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Register() {
   const smUp = useResponsive('up', 'sm');
-
   const mdUp = useResponsive('up', 'md');
-
+  
   return (
     <Page title="Register">
       <RootStyle>
@@ -87,13 +85,12 @@ export default function Register() {
 
         <Container>
           <ContentStyle>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" color='primary' gutterBottom>
               Get started absolutely free.
             </Typography>
 
             <Typography sx={{ color: 'text.secondary', mb: 5 }}>Free forever. No credit card needed.</Typography>
 
-            <AuthSocial />
 
             <RegisterForm />
 
@@ -102,7 +99,7 @@ export default function Register() {
               <Link underline="always" color="text.primary" href="#">
                 Terms of Service
               </Link>
-              {''}and{''}
+              &nbsp;and&nbsp;
               <Link underline="always" color="text.primary" href="#">
                 Privacy Policy
               </Link>

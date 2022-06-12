@@ -1,19 +1,33 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 // material
 import { Link, Stack, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import { useSelect } from '@mui/base';
+// toast
+import { toast } from 'react-toastify';
 // component
 import Iconify from '../../../components/Iconify';
+// authSlice
+import { login, reset } from '../../../app/reducers/authSlicer';
 
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (isError) toast.error(message);
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -24,10 +38,10 @@ export default function LoginForm() {
     initialValues: {
       email: '',
       password: '',
-      remember: true,
     },
     validationSchema: LoginSchema,
-    onSubmit: () => {
+    onSubmit: (values) => {
+      handleFormSubmit(values)
       navigate('/dashboard', { replace: true });
     },
   });
@@ -36,6 +50,10 @@ export default function LoginForm() {
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
+  };
+
+  const handleFormSubmit = (userData) => {
+    dispatch(login(userData));
   };
 
   return (
@@ -73,11 +91,8 @@ export default function LoginForm() {
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <FormControlLabel
-            control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
-            label="Remember me"
-          />
-
+          <div />
+          {/** Div added for alignment of the component */}
           <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
             Forgot password?
           </Link>

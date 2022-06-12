@@ -88,14 +88,13 @@ export default function Login() {
 
         <Container maxWidth="sm">
           <ContentStyle>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" color="primary" gutterBottom>
               Sign in to Minimal
             </Typography>
 
             <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
 
-            <AuthSocial />
-
+         
             <LoginForm />
 
             {!smUp && (

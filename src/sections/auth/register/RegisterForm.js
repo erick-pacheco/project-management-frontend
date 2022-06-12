@@ -1,10 +1,16 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useNavigate } from 'react-router-dom';
+
 // material
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import {register, reset} from '../../../app/reducers/authSlicer'
+
 // component
 import Iconify from '../../../components/Iconify';
 
@@ -12,8 +18,12 @@ import Iconify from '../../../components/Iconify';
 
 export default function RegisterForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const [showPassword, setShowPassword] = useState(false);
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  )
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name required'),
@@ -30,12 +40,16 @@ export default function RegisterForm() {
       password: '',
     },
     validationSchema: RegisterSchema,
-    onSubmit: () => {
+    onSubmit: (userData) => {
+      dispatch(register(userData))
       navigate('/dashboard', { replace: true });
     },
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+
+
+
 
   return (
     <FormikProvider value={formik}>

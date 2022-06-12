@@ -31,8 +31,8 @@ import MenuPopover from '../../components/MenuPopover';
 const NOTIFICATIONS = [
   {
     id: faker.datatype.uuid(),
-    title: 'Your order is placed',
-    description: 'waiting for shipping',
+    title: 'Logged In Success',
+    description: JSON.parse(window.localStorage.getItem('user')).token,
     avatar: null,
     type: 'order_placed',
     createdAt: set(new Date(), { hours: 10, minutes: 30 }),
